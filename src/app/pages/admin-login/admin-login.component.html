@@ -1,0 +1,32 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <mat-card-title>Admin Login</mat-card-title>
+    <mat-card-subtitle>MVP-only auth for content editing</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <p class="hint">
+      Use <strong>admin</strong> / <strong>storymap</strong> for the mock session.
+    </p>
+
+    <form class="login-form" [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Username</mat-label>
+        <input matInput formControlName="username" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" formControlName="password" />
+      </mat-form-field>
+
+      @if (hasError()) {
+        <p class="error-text">Invalid credentials for the MVP admin session.</p>
+      }
+
+      <div class="actions">
+        <button mat-flat-button type="submit">Sign In</button>
+        <a mat-stroked-button routerLink="/scenes/river-at-dawn">Back to Story</a>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

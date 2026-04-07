@@ -1,0 +1,65 @@
+<section class="dashboard-header">
+  <div>
+    <p class="eyebrow">Protected Area</p>
+    <h1>Story Map Admin</h1>
+    <p>Create, edit, and delete scenes and map objects using in-memory mock data.</p>
+  </div>
+
+  <button mat-stroked-button (click)="logout()">Sign Out</button>
+</section>
+
+<mat-tab-group>
+  <mat-tab label="Scenes">
+    <section class="admin-grid">
+      <app-scene-editor [scene]="selectedScene()" (saved)="saveScene($event)" />
+
+      <mat-card class="list-card">
+        <mat-card-header>
+          <mat-card-title>Scene Records</mat-card-title>
+          <mat-card-subtitle>Current in-memory content</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (scene of scenes(); track scene.id) {
+              <mat-list-item>
+                <div matListItemTitle>{{ scene.title }}</div>
+                <div matListItemLine>{{ scene.period }} · {{ scene.id }}</div>
+                <div matListItemMeta class="meta-actions">
+                  <button mat-button type="button" (click)="editScene(scene.id)">Edit</button>
+                  <button mat-button type="button" (click)="deleteScene(scene.id)">Delete</button>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </mat-tab>
+
+  <mat-tab label="Map Objects">
+    <section class="admin-grid">
+      <app-map-object-editor [mapObject]="selectedMapObject()" (saved)="saveMapObject($event)" />
+
+      <mat-card class="list-card">
+        <mat-card-header>
+          <mat-card-title>Map Object Records</mat-card-title>
+          <mat-card-subtitle>Linked story geography</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          <mat-list>
+            @for (mapObject of mapObjects(); track mapObject.id) {
+              <mat-list-item>
+                <div matListItemTitle>{{ mapObject.name }}</div>
+                <div matListItemLine>{{ mapObject.type }} · {{ mapObject.sceneIds.join(', ') }}</div>
+                <div matListItemMeta class="meta-actions">
+                  <button mat-button type="button" (click)="editMapObject(mapObject.id)">Edit</button>
+                  <button mat-button type="button" (click)="deleteMapObject(mapObject.id)">Delete</button>
+                </div>
+              </mat-list-item>
+            }
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </section>
+  </mat-tab>
+</mat-tab-group>

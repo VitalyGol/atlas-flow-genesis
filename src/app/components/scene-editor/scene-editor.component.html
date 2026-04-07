@@ -1,0 +1,39 @@
+<mat-card class="editor-card">
+  <mat-card-header>
+    <mat-card-title>{{ scene() ? 'Edit Scene' : 'Create Scene' }}</mat-card-title>
+    <mat-card-subtitle>Manage story text, period, and tags</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="editor-form" [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Scene ID</mat-label>
+        <input matInput formControlName="id" placeholder="river-at-dawn" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Title</mat-label>
+        <input matInput formControlName="title" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Period</mat-label>
+        <input matInput formControlName="period" placeholder="1846" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Tags</mat-label>
+        <input matInput formControlName="tags" placeholder="arrival, river, morning" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Scene Text</mat-label>
+        <textarea matInput rows="6" formControlName="text"></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button type="submit">Save Scene</button>
+        <button mat-stroked-button type="button" (click)="reset()">Clear</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

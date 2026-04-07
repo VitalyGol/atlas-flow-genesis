@@ -1,0 +1,30 @@
+<div class="panel">
+  <div class="panel-header">
+    <p class="eyebrow">Related Map Objects</p>
+    <h2>Scene Geography</h2>
+  </div>
+
+  @if (mapObjects().length) {
+    <div class="map-object-grid">
+      @for (mapObject of mapObjects(); track mapObject.id) {
+        <mat-card class="map-object-card">
+          <mat-card-header>
+            <mat-card-title>{{ mapObject.name }}</mat-card-title>
+            <mat-card-subtitle>{{ mapObject.type }}</mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{ mapObject.detail }}</p>
+            <mat-chip-set>
+              <mat-chip>{{ mapObject.period }}</mat-chip>
+              <mat-chip>{{ mapObject.coordinates }}</mat-chip>
+            </mat-chip-set>
+          </mat-card-content>
+        </mat-card>
+      }
+    </div>
+  } @else {
+    <mat-card class="map-object-card empty-card">
+      <mat-card-content>No map objects are linked to this scene yet.</mat-card-content>
+    </mat-card>
+  }
+</div>

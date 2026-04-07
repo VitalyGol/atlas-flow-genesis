@@ -1,0 +1,25 @@
+.login-card {
+  max-width: 34rem;
+  margin: 4rem auto 0;
+  border-radius: 24px;
+}
+
+.hint {
+  margin-bottom: 1rem;
+}
+
+.login-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.error-text {
+  margin: 0;
+  color: #b3261e;
+}

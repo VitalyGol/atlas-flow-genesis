@@ -1,0 +1,25 @@
+@import 'leaflet/dist/leaflet.css';
+@import '@angular/material/prebuilt-themes/azure-blue.css';
+
+html,
+body,
+app-root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+  color: #102031;
+  background:
+    radial-gradient(circle at top left, rgba(52, 105, 154, 0.18), transparent 24%),
+    linear-gradient(180deg, #f4f6fa 0%, #e8eef4 100%);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.mat-mdc-card {
+  box-shadow: 0 24px 60px rgba(16, 32, 49, 0.08) !important;
+}

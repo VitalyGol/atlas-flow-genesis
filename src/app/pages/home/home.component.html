@@ -1,0 +1,73 @@
+<mat-sidenav-container class="home-layout">
+  <mat-sidenav
+    #drawer
+    class="label-sidebar"
+    mode="side"
+    position="end"
+    [opened]="false"
+  >
+    <div class="sidebar-header">
+      <div class="sidebar-header-row">
+        <div>
+          <p class="sidebar-eyebrow">Главы Берешит</p>
+        </div>
+
+        <button
+          matIconButton
+          type="button"
+          class="sidebar-close"
+          aria-label="Close topics sidebar"
+          (click)="drawer.close()"
+        >
+          <span class="sidebar-close-glyph" aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <p>Выберите главу, чтобы увидеть её географию и разбор стихов.</p>
+    </div>
+
+    <mat-nav-list>
+      @for (topic of topics; track topic.id) {
+        <div
+          class="topic-item"
+          [class.active]="selectedTopicId() === topic.id"
+          (click)="focusTopic(topic, drawer)"
+        >
+          <div mat-list-item type="button" class="topic-focus">
+            <span class="area-name">{{ topic.name }}</span>
+            <span class="area-description">{{ topic.description }}</span>
+          </div>
+          <div class="topic-actions">
+            <button mat-button type="button" (click)="viewTopic(topic, drawer)">Перейти</button>
+          </div>
+        </div>
+      }
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <section class="map-stage">
+      <div class="hero-panel">
+        <p class="eyebrow">География и исследование</p>
+        <h1>Берешит</h1>
+        <p class="hero-copy">Маршруты, события и места книги Берешит на интерактивной карте.</p>
+        <div class="hero-actions">
+          <a mat-stroked-button routerLink="/scenes/river-at-dawn">Начать путь</a>
+        </div>
+      </div>
+
+      <div #mapHost class="map-host" aria-label="Interactive polygon map"></div>
+
+      <button
+        mat-fab
+        extended
+        class="sidebar-fab"
+        type="button"
+        [class.hidden]="drawer.opened"
+        (click)="drawer.open()"
+      >
+        Открыть главы
+      </button>
+    </section>
+  </mat-sidenav-content>
+</mat-sidenav-container>

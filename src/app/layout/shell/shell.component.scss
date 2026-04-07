@@ -1,0 +1,56 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(30, 136, 229, 0.14), transparent 28%),
+    linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
+}
+
+.shell-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  gap: 1rem;
+  background: rgba(8, 32, 50, 0.92);
+  color: #f3f7fb;
+}
+
+.brand {
+  color: inherit;
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+}
+
+.shell-nav {
+  display: flex;
+  flex: 1;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.active-link {
+  background: rgba(255, 255, 255, 0.14);
+}
+
+.session-button {
+  white-space: nowrap;
+}
+
+.shell-content {
+  padding: 1.5rem;
+}
+
+@media (max-width: 840px) {
+  .shell-toolbar {
+    align-items: flex-start;
+    min-height: auto;
+    padding-block: 0.75rem;
+  }
+
+  .shell-content {
+    padding: 1rem;
+  }
+}

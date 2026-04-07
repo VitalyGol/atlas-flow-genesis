@@ -1,0 +1,49 @@
+<mat-card class="editor-card">
+  <mat-card-header>
+    <mat-card-title>{{ mapObject() ? 'Edit Map Object' : 'Create Map Object' }}</mat-card-title>
+    <mat-card-subtitle>Link geography to one or more scenes</mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <form class="editor-form" [formGroup]="form" (ngSubmit)="submit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Map Object ID</mat-label>
+        <input matInput formControlName="id" placeholder="ferry-landing" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input matInput formControlName="name" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Type</mat-label>
+        <input matInput formControlName="type" placeholder="Landmark" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Period</mat-label>
+        <input matInput formControlName="period" placeholder="1846-1847" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Coordinates</mat-label>
+        <input matInput formControlName="coordinates" placeholder="34.815, 31.963" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Scene IDs</mat-label>
+        <input matInput formControlName="sceneIds" placeholder="river-at-dawn, market-of-glass" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Detail</mat-label>
+        <textarea matInput rows="4" formControlName="detail"></textarea>
+      </mat-form-field>
+
+      <div class="actions">
+        <button mat-flat-button type="submit">Save Map Object</button>
+        <button mat-stroked-button type="button" (click)="reset()">Clear</button>
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

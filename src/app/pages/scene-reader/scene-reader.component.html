@@ -1,0 +1,97 @@
+@if (currentScene(); as scene) {
+  <section class="scene-page">
+    <nav class="breadcrumb" aria-label="Breadcrumb">
+      <a routerLink="/">Home</a>
+      <span class="breadcrumb-separator">/</span>
+      <span>{{ scene.title }}</span>
+    </nav>
+
+    <header class="scene-header">
+      <div>
+        <p class="eyebrow">Story</p>
+        <h1>{{ scene.title }}</h1>
+        <p class="scene-lead">{{ sceneLead(scene) }}</p>
+      </div>
+
+      <mat-chip-set class="tag-row">
+        <mat-chip>{{ scene.period }}</mat-chip>
+        @for (tag of scene.tags; track tag) {
+          <mat-chip>{{ tag }}</mat-chip>
+        }
+      </mat-chip-set>
+    </header>
+
+    <section class="scene-split">
+      <aside class="asset-column">
+        @if (activeAsset(); as asset) {
+          <mat-card class="asset-card">
+            <div class="asset-shell" [class.map-asset]="asset.type === 'map'">
+              @if (asset.type === 'map') {
+                <div class="map-preview">
+                  <div class="map-grid"></div>
+                  <div class="map-route"></div>
+                  <div class="map-pin"></div>
+                  <span class="map-caption">{{ asset.locationLabel ?? 'Map' }}</span>
+                </div>
+              } @else {
+                <img class="asset-image" [src]="asset.imageUrl" [alt]="asset.title" />
+              }
+            </div>
+
+            <mat-card-content class="asset-copy">
+              <p class="asset-type">{{ asset.type }}</p>
+              <h2>{{ asset.title }}</h2>
+              <p>{{ asset.description }}</p>
+            </mat-card-content>
+
+            <div class="carousel-controls">
+              <button mat-stroked-button type="button" (click)="previousAsset()">Previous</button>
+              <span>{{ activeAssetIndex() + 1 }} / {{ activeAssets().length }}</span>
+              <button mat-stroked-button type="button" (click)="nextAsset()">Next</button>
+            </div>
+
+            <div class="carousel-dots">
+              @for (assetItem of activeAssets(); track trackAsset($index, assetItem)) {
+                <button
+                  type="button"
+                  class="carousel-dot"
+                  [class.active]="activeAssetIndex() === $index"
+                  [attr.aria-label]="'Show asset ' + ($index + 1)"
+                  (click)="selectAsset($index)"></button>
+              }
+            </div>
+          </mat-card>
+        } @else {
+          <mat-card class="asset-card empty-card">
+            <mat-card-content>No assets available for this paragraph.</mat-card-content>
+          </mat-card>
+        }
+      </aside>
+
+      <section class="paragraph-column">
+        <div class="paragraph-header">
+          <p class="eyebrow">Paragraphs</p>
+          <h2>Story Flow</h2>
+        </div>
+
+        @for (paragraph of paragraphs(); track trackParagraph($index, paragraph)) {
+          <article
+            class="paragraph-card"
+            [class.active]="activeParagraph().id === paragraph.id"
+            (click)="selectParagraph(paragraph)">
+            <div class="paragraph-meta">
+              <span>Part {{ $index + 1 }}</span>
+              <span>{{ paragraph.assets.length }} assets</span>
+            </div>
+            <h3>{{ paragraph.title }}</h3>
+            <p>{{ paragraph.text }}</p>
+          </article>
+        }
+      </section>
+    </section>
+  </section>
+} @else {
+  <mat-card class="empty-card">
+    <mat-card-content>Scene not found.</mat-card-content>
+  </mat-card>
+}

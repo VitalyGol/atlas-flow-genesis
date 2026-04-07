@@ -1,0 +1,30 @@
+<mat-toolbar class="shell-toolbar">
+  <a class="brand" routerLink="/">AtlasFlow Story Map</a>
+
+  <nav class="shell-nav" aria-label="Primary">
+    <a
+      mat-button
+      routerLink="/"
+      [routerLinkActiveOptions]="{ exact: true }"
+      routerLinkActive="active-link">
+      Home
+    </a>
+    <a
+      mat-button
+      routerLink="/scenes/river-at-dawn"
+      [routerLinkActiveOptions]="{ exact: false }"
+      routerLinkActive="active-link">
+      Read Story
+    </a>
+    <a mat-button routerLink="/admin" routerLinkActive="active-link">Admin Dashboard</a>
+    <a mat-button routerLink="/admin/login" routerLinkActive="active-link">Admin Login</a>
+  </nav>
+
+  <button mat-button class="session-button" (click)="toggleAdminSession()">
+    {{ auth.isAdmin() ? 'End Admin Session' : 'Quick Admin Demo' }}
+  </button>
+</mat-toolbar>
+
+<main class="shell-content">
+  <router-outlet />
+</main>

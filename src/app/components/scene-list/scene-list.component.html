@@ -1,0 +1,8 @@
+<mat-nav-list class="scene-list">
+  @for (scene of scenes(); track scene.id) {
+    <a mat-list-item [routerLink]="['/scenes', scene.id]" [activated]="scene.id === activeSceneId()">
+      <span matListItemTitle>{{ scene.title }}</span>
+      <span matListItemLine>{{ scene.period }}</span>
+    </a>
+  }
+</mat-nav-list>
