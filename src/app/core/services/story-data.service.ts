@@ -5,17 +5,22 @@ import { MapObject, Scene } from '../models/story.models';
 const INITIAL_SCENES: Scene[] = [
   {
     id: 'river-at-dawn',
-    title: 'River at Dawn',
+    title: 'Родословие Тераха и путь из Ура',
     period: '1846',
     tags: ['arrival', 'river', 'morning'],
-    text:
-      'The ferry scraped against the shallows as the first light reached the trading posts. Travelers stepped into the fog, carrying rumors about a missing survey team and a new road that would cut through the marsh.',
+    text: 'Семья Тераха: рождение Аврама, смерть Арана, браки, бесплодие Сарай и переселение из Ура в Харран',
     paragraphs: [
       {
-        id: 'landing',
-        title: 'Landing at First Light',
+        id: 'genesis11_1',
+        path: 'Берешит 11:26',
+        title: ' И исполнилось Тераху семьдесят лет, и родил он Аврама, Нахора и Харана',
         text:
-          'The ferry reached the bank before sunrise. Terah’s caravan unloaded animals, water jars, and wrapped scrolls while scouts checked the reed line for a safe crossing.',
+          `У Тераха рождаются три сына. Порядок их перечисления в тексте не обязательно отражает старшинство: в библейской традиции на первое место нередко выносится персонаж, играющий ключевую роль в дальнейшем повествовании.
+Указание возраста Тераха, по-видимому, означает не момент рождения всех трёх сыновей, а возраст, с которого у него начали рождаться дети.
+Особого внимания заслуживает имя Аврама. В семитской традиции оно обычно объясняется как сочетание элементов ab («отец») и ram («возвышенный»), что позволяет переводить его как «возвышенный отец».
+В библейской традиции имена нередко осмысляются в свете дальнейшей судьбы персонажа, поэтому возможно, что данное имя приобретает особое значение в контексте будущей роли Аврама. В то же время связывать его напрямую с социальным статусом семьи затруднительно, поскольку текст не даёт для этого явных оснований.
+Значения имён Нахора и Харана остаются дискуссионными, поэтому в рамках данного анализа они не рассматриваются.
+`,
         assets: [
           {
             id: 'landing-map',
@@ -33,33 +38,26 @@ const INITIAL_SCENES: Scene[] = [
           }
         ]
       },
+      
       {
-        id: 'camp',
-        title: 'Camp Beside the Reeds',
+        id: 'genesis11_2',
+        path: 'Берешит 11:27',
+        title: ' И это история Тераха: Терах родил Аврама, Нахора и Арана; Аран родил Лота.',
         text:
-          'Once the animals were ashore, the group marked a temporary camp. Fires stayed low, and the elders spoke quietly about a western road that could shorten the journey.',
+          '',
         assets: [
-          {
-            id: 'camp-map',
-            type: 'map',
-            title: 'Camp Layout',
-            description: 'Mock map showing tent rows, supply animals, and the watch line.',
-            locationLabel: 'Reed Marsh Camp'
-          },
-          {
-            id: 'camp-image',
-            type: 'image',
-            title: 'Night Watch',
-            description: 'A quiet camp scene with guards posted at the water edge.',
-            imageUrl: 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1200&q=80'
-          }
+         
         ]
       },
       {
-        id: 'rumors',
-        title: 'Rumors on the Road',
+        id: 'genesis11_3',
+        path: 'Берешит 11:28',
+        title: 'Аран умер на глазах у отца своего в стране рождения своего, в Уре Халдейском.',
         text:
-          'By dawn, merchants arriving from the south repeated stories about a missing survey team and an older route hidden in marsh records. The news shifts the direction of the next march.',
+          `Смерть Арана при жизни Тераха оставляет его сына Лота без отца. В условиях древневосточного общества это означало, что он продолжал находиться в составе дома своего деда, Тераха, который сохранял статус главы семьи.
+В патриархальной структуре древнего Ближнего Востока семья представляла собой расширенный дом (bet av), объединяющий несколько поколений. Члены такого дома находились под властью и ответственностью старшего мужчины, который выступал как его глава.
+Таким образом, положение Лота после смерти отца можно рассматривать как зависимое внутри семейной структуры Тераха. В дальнейшем это объясняет, почему он оказывается связан с Аврамом и следует за ним, выступая не как самостоятельный персонаж, а как часть семейной группы.
+`,
         assets: [
           {
             id: 'rumors-map',
@@ -79,114 +77,7 @@ const INITIAL_SCENES: Scene[] = [
       }
     ]
   },
-  {
-    id: 'market-of-glass',
-    title: 'Market of Glass',
-    period: '1847',
-    tags: ['market', 'trade', 'city'],
-    text:
-      'In the noon heat, the glass arcade reflected every banner in fractured color. A coded note changed hands beside the clock tower, linking the merchants guild to the vanished survey maps.',
-    paragraphs: [
-      {
-        id: 'arcade',
-        title: 'Entering the Arcade',
-        text:
-          'The caravan enters a district where trade stalls and mirrors multiply every movement. It is the first place where route information becomes a commodity.',
-        assets: [
-          {
-            id: 'arcade-map',
-            type: 'map',
-            title: 'Market Grid',
-            description: 'Mock district map of the arcade gates and surrounding stalls.',
-            locationLabel: 'Glass Arcade'
-          },
-          {
-            id: 'arcade-image',
-            type: 'image',
-            title: 'Reflective Market',
-            description: 'Color and movement bouncing through a dense covered market.',
-            imageUrl: 'https://images.unsplash.com/photo-1518546305927-5a555bb7020d?auto=format&fit=crop&w=1200&q=80'
-          }
-        ]
-      },
-      {
-        id: 'tower',
-        title: 'Note at the Clock Tower',
-        text:
-          'A coded note changes hands in the shade of the tower. The caravan learns that lost survey records may have been traded through the merchants guild.',
-        assets: [
-          {
-            id: 'tower-map',
-            type: 'map',
-            title: 'Tower Vantage',
-            description: 'Mock map of the tower sight lines and messenger paths.',
-            locationLabel: 'Clock Tower'
-          },
-          {
-            id: 'tower-image',
-            type: 'image',
-            title: 'Messenger Exchange',
-            description: 'The handoff point where a sealed note alters the journey.',
-            imageUrl: 'https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=1200&q=80'
-          }
-        ]
-      }
-    ]
-  },
-  {
-    id: 'citadel-after-rain',
-    title: 'Citadel After Rain',
-    period: '1848',
-    tags: ['fortress', 'storm', 'politics'],
-    text:
-      'Rainwater streamed off the citadel walls while ministers argued over territory claims. Inside the archive hall, the old charts revealed that the marsh road was drawn decades earlier and quietly erased.',
-    paragraphs: [
-      {
-        id: 'walls',
-        title: 'Citadel Walls After Rain',
-        text:
-          'Rain leaves the stone dark and reflective. The approach to the archive is controlled, and every traveler is measured against the politics of the gate.',
-        assets: [
-          {
-            id: 'walls-map',
-            type: 'map',
-            title: 'Citadel Gate Map',
-            description: 'Mock access map covering the walls, checkpoints, and archive stairs.',
-            locationLabel: 'Citadel Ridge'
-          },
-          {
-            id: 'walls-image',
-            type: 'image',
-            title: 'Wet Stone Rampart',
-            description: 'Rainwater running from the upper wall toward the gate court.',
-            imageUrl: 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1200&q=80'
-          }
-        ]
-      },
-      {
-        id: 'archive',
-        title: 'Charts in the Archive Hall',
-        text:
-          'Inside the hall, older charts expose that the marsh road had been recorded long before and later erased from public memory. The journey becomes part investigation, part inheritance.',
-        assets: [
-          {
-            id: 'archive-map',
-            type: 'map',
-            title: 'Archive Chart',
-            description: 'Mock annotated map copied from the sealed charts in the archive.',
-            locationLabel: 'Archive Hall'
-          },
-          {
-            id: 'archive-image',
-            type: 'image',
-            title: 'Chart Table',
-            description: 'Copied route sheets spread over a table under dim archive light.',
-            imageUrl: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?auto=format&fit=crop&w=1200&q=80'
-          }
-        ]
-      }
-    ]
-  }
+ 
 ];
 
 const INITIAL_MAP_OBJECTS: MapObject[] = [

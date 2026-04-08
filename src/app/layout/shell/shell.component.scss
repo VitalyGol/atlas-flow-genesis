@@ -1,6 +1,8 @@
 :host {
-  display: block;
-  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
   background:
     radial-gradient(circle at top left, rgba(30, 136, 229, 0.14), transparent 28%),
     linear-gradient(180deg, #f7f9fc 0%, #eef3f8 100%);
@@ -40,7 +42,11 @@
 }
 
 .shell-content {
+  display: flex;
+  flex: 1;
+  min-height: 0;
   padding: 1.5rem;
+  overflow: hidden;
 }
 
 @media (max-width: 840px) {

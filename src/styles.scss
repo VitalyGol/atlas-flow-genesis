@@ -5,6 +5,7 @@ html,
 body,
 app-root {
   height: 100%;
+  overflow: hidden;
 }
 
 body {
@@ -14,6 +15,10 @@ body {
   background:
     radial-gradient(circle at top left, rgba(52, 105, 154, 0.18), transparent 24%),
     linear-gradient(180deg, #f4f6fa 0%, #e8eef4 100%);
+}
+
+app-root {
+  display: block;
 }
 
 * {

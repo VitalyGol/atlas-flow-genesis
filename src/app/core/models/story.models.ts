@@ -5,10 +5,13 @@ export interface SceneAsset {
   description: string;
   imageUrl?: string;
   locationLabel?: string;
+  coordinates?: string;
+  mapTopicId?: string;
 }
 
 export interface SceneParagraph {
   id: string;
+  path: string;
   title: string;
   text: string;
   assets: SceneAsset[];

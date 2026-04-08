@@ -8,17 +8,9 @@
 
     <header class="scene-header">
       <div>
-        <p class="eyebrow">Story</p>
         <h1>{{ scene.title }}</h1>
-        <p class="scene-lead">{{ sceneLead(scene) }}</p>
+        <p class="scene-lead">{{ scene.text }}</p>
       </div>
-
-      <mat-chip-set class="tag-row">
-        <mat-chip>{{ scene.period }}</mat-chip>
-        @for (tag of scene.tags; track tag) {
-          <mat-chip>{{ tag }}</mat-chip>
-        }
-      </mat-chip-set>
     </header>
 
     <section class="scene-split">
@@ -28,13 +20,30 @@
             <div class="asset-shell" [class.map-asset]="asset.type === 'map'">
               @if (asset.type === 'map') {
                 <div class="map-preview">
-                  <div class="map-grid"></div>
-                  <div class="map-route"></div>
-                  <div class="map-pin"></div>
+                  <div
+                    #assetMapHost
+                    class="leaflet-map"
+                    [attr.aria-label]="asset.title + ' map'"
+                  ></div>
+                  <button
+                    class="map-fullscreen-button"
+                    type="button"
+                    [attr.aria-label]="
+                      isMapFullscreen() ? 'Exit fullscreen map' : 'Open fullscreen map'
+                    "
+                    (click)="toggleMapFullscreen()"
+                  >
+                    {{ isMapFullscreen() ? 'Exit fullscreen' : 'Fullscreen' }}
+                  </button>
                   <span class="map-caption">{{ asset.locationLabel ?? 'Map' }}</span>
+                  @if (!mapHasObjects()) {
+                    <div class="map-empty-state">No mapped locations available for this scene.</div>
+                  }
                 </div>
               } @else {
-                <img class="asset-image" [src]="asset.imageUrl" [alt]="asset.title" />
+                <button class="asset-image-button" type="button" (click)="openImagePreview()">
+                  <img class="asset-image" [src]="asset.imageUrl" [alt]="asset.title" />
+                </button>
               }
             </div>
 
@@ -42,6 +51,11 @@
               <p class="asset-type">{{ asset.type }}</p>
               <h2>{{ asset.title }}</h2>
               <p>{{ asset.description }}</p>
+              @if (asset.type === 'image') {
+                <button mat-stroked-button type="button" (click)="openImagePreview()">
+                  Preview image
+                </button>
+              }
             </mat-card-content>
 
             <div class="carousel-controls">
@@ -57,7 +71,8 @@
                   class="carousel-dot"
                   [class.active]="activeAssetIndex() === $index"
                   [attr.aria-label]="'Show asset ' + ($index + 1)"
-                  (click)="selectAsset($index)"></button>
+                  (click)="selectAsset($index)"
+                ></button>
               }
             </div>
           </mat-card>
@@ -68,30 +83,47 @@
         }
       </aside>
 
-      <section class="paragraph-column">
-        <div class="paragraph-header">
-          <p class="eyebrow">Paragraphs</p>
-          <h2>Story Flow</h2>
-        </div>
-
-        @for (paragraph of paragraphs(); track trackParagraph($index, paragraph)) {
-          <article
-            class="paragraph-card"
-            [class.active]="activeParagraph().id === paragraph.id"
-            (click)="selectParagraph(paragraph)">
-            <div class="paragraph-meta">
-              <span>Part {{ $index + 1 }}</span>
-              <span>{{ paragraph.assets.length }} assets</span>
-            </div>
-            <h3>{{ paragraph.title }}</h3>
-            <p>{{ paragraph.text }}</p>
-          </article>
-        }
-      </section>
+      <div class="paragraph-scroller">
+        <section class="paragraph-column">
+          @for (paragraph of paragraphs(); track trackParagraph($index, paragraph)) {
+            <article
+              class="paragraph-card"
+              [class.active]="activeParagraphId() === paragraph.id"
+              (click)="selectParagraph(paragraph)"
+            >
+              <div class="paragraph-meta">
+                <span>{{ paragraph.path }}</span>
+              </div>
+              <h3>{{ paragraph.title }}</h3>
+              <div class="paragraph-text" [innerHTML]="sanitizedParagraphText(paragraph)"></div>
+            </article>
+          }
+        </section>
+      </div>
     </section>
   </section>
 } @else {
   <mat-card class="empty-card">
     <mat-card-content>Scene not found.</mat-card-content>
   </mat-card>
+}
+
+@if (previewImageOpen() && activeAsset(); as asset) {
+  <div class="image-preview-backdrop" (click)="closeImagePreview()">
+    <div class="image-preview-dialog" (click)="$event.stopPropagation()">
+      <button
+        class="image-preview-close"
+        type="button"
+        aria-label="Close image preview"
+        (click)="closeImagePreview()"
+      >
+        Close
+      </button>
+      <img class="image-preview" [src]="asset.imageUrl" [alt]="asset.title" />
+      <div class="image-preview-copy">
+        <h3>{{ asset.title }}</h3>
+        <p>{{ asset.description }}</p>
+      </div>
+    </div>
+  </div>
 }

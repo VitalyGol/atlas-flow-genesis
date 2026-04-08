@@ -16,6 +16,7 @@ import 'leaflet-providers';
 import { HomeDataService, MapTopic } from '../../core/services/home-data.service';
 
 interface TopicLayers {
+  polyline: L.Polyline[];
   polygons: L.Polygon[];
   labels: L.Marker[];
 }
@@ -147,7 +148,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
         return marker;
       });
 
-      this.topicLayers.set(topic.id, { polygons, labels });
+      this.topicLayers.set(topic.id, { polygons, labels, polyline });
     }
 
     this.syncTopicStyles();
@@ -163,6 +164,32 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       }
 
       const isSelected = this.selectedTopicId() === topic.id;
+
+      for (const polygon of layers.polygons) {
+        polygon.setStyle({
+          color: isSelected ? '#07243a' : '#124e78',
+          fillColor: isSelected ? '#ffb347' : '#3ea6d8',
+          fillOpacity: isSelected ? 0.5 : 0.34,
+          weight: isSelected ? 3 : 2,
+        });
+
+        if (isSelected) {
+          polygon.bringToFront();
+        }
+      }
+
+      for (const polygon of layers.polyline) {
+        polygon.setStyle({
+          color: isSelected ? 'red' : '#124e78',
+          fillOpacity: isSelected ? 0.5 : 0.34,
+          weight: isSelected ? 3 : 2,
+        });
+
+        if (isSelected) {
+          polygon.bringToFront();
+        }
+      }
+
 
       for (const polygon of layers.polygons) {
         polygon.setStyle({
