@@ -1,0 +1,256 @@
+<section class="editor-toolbar">
+  <div>
+    <h2>Story Data</h2>
+    <p>Edit scenes, paragraphs, assets, and map objects stored in <code>story-data.json</code>.</p>
+  </div>
+
+  <div class="toolbar-actions">
+    <button mat-flat-button type="button" (click)="submit()">Save Story Data</button>
+  </div>
+</section>
+
+<mat-tab-group>
+  <mat-tab label="Scenes">
+    <section class="editor-grid">
+      <mat-card class="list-card">
+        <mat-card-content>
+          @for (scene of sceneControls(); track $index) {
+            <button
+              class="list-item"
+              type="button"
+              [class.active]="selectedSceneIndex() === $index"
+              (click)="selectScene($index)"
+            >
+              <span>{{ scene.get('title')?.value || 'Untitled scene' }}</span>
+              <span>{{ scene.get('id')?.value || 'new-scene' }}</span>
+            </button>
+          }
+
+          <button mat-stroked-button type="button" (click)="addScene()">Add scene</button>
+        </mat-card-content>
+      </mat-card>
+
+      @if (selectedSceneGroup(); as sceneGroup) {
+        <form class="document-form" [formGroup]="sceneGroup">
+          <mat-card>
+            <mat-card-content class="card-grid">
+              <mat-form-field>
+                <mat-label>Scene ID</mat-label>
+                <input matInput formControlName="id" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Period</mat-label>
+                <input matInput formControlName="period" />
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" />
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Tags</mat-label>
+                <input matInput formControlName="tags" />
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Lead text</mat-label>
+                <textarea matInput rows="4" formControlName="text"></textarea>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>Paragraphs</mat-card-title>
+            </mat-card-header>
+            <mat-card-content formArrayName="paragraphs">
+              @for (paragraph of paragraphsArray(sceneGroup).controls; track $index) {
+                <div class="nested-card" [formGroupName]="$index">
+                  <div class="card-grid">
+                    <mat-form-field>
+                      <mat-label>Paragraph ID</mat-label>
+                      <input matInput formControlName="id" />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Path</mat-label>
+                      <input matInput formControlName="path" />
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                      <mat-label>Title</mat-label>
+                      <input matInput formControlName="title" />
+                    </mat-form-field>
+
+                    <mat-form-field class="full-width">
+                      <mat-label>Text</mat-label>
+                      <textarea matInput rows="5" formControlName="text"></textarea>
+                    </mat-form-field>
+                  </div>
+
+                  <div class="subsection" formArrayName="assets">
+                    <div class="section-header">
+                      <h3>Assets</h3>
+                      <button mat-stroked-button type="button" (click)="addAsset(paragraph)">
+                        Add asset
+                      </button>
+                    </div>
+
+                    @for (asset of assetsArray(paragraph).controls; track $index) {
+                      <div class="nested-card asset-card" [formGroupName]="$index">
+                        <div class="card-grid">
+                          <mat-form-field>
+                            <mat-label>Asset ID</mat-label>
+                            <input matInput formControlName="id" />
+                          </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Type</mat-label>
+                            <mat-select formControlName="type">
+                              <mat-option value="map">map</mat-option>
+                              <mat-option value="image">image</mat-option>
+                            </mat-select>
+                          </mat-form-field>
+
+                          <mat-form-field class="full-width">
+                            <mat-label>Title</mat-label>
+                            <input matInput formControlName="title" />
+                          </mat-form-field>
+
+                          <mat-form-field class="full-width">
+                            <mat-label>Description</mat-label>
+                            <textarea matInput rows="3" formControlName="description"></textarea>
+                          </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Image URL</mat-label>
+                            <input matInput formControlName="imageUrl" />
+                          </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Location label</mat-label>
+                            <input matInput formControlName="locationLabel" />
+                          </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Coordinates</mat-label>
+                            <input matInput formControlName="coordinates" />
+                          </mat-form-field>
+
+                          <mat-form-field>
+                            <mat-label>Map topic ID</mat-label>
+                            <input matInput formControlName="mapTopicId" />
+                          </mat-form-field>
+                        </div>
+
+                        <button mat-button type="button" (click)="removeAsset(paragraph, $index)">
+                          Remove asset
+                        </button>
+                      </div>
+                    }
+                  </div>
+
+                  <button mat-button type="button" (click)="removeParagraph(sceneGroup, $index)">
+                    Remove paragraph
+                  </button>
+                </div>
+              }
+
+              <div class="footer-actions">
+                <button mat-stroked-button type="button" (click)="addParagraph(sceneGroup)">
+                  Add paragraph
+                </button>
+                <button
+                  mat-button
+                  type="button"
+                  color="warn"
+                  (click)="removeScene(selectedSceneIndex())"
+                >
+                  Delete scene
+                </button>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </form>
+      }
+    </section>
+  </mat-tab>
+
+  <mat-tab label="Map Objects">
+    <section class="editor-grid">
+      <mat-card class="list-card">
+        <mat-card-content>
+          @for (mapObject of mapObjectControls(); track $index) {
+            <button
+              class="list-item"
+              type="button"
+              [class.active]="selectedMapObjectIndex() === $index"
+              (click)="selectMapObject($index)"
+            >
+              <span>{{ mapObject.get('name')?.value || 'Untitled object' }}</span>
+              <span>{{ mapObject.get('id')?.value || 'new-object' }}</span>
+            </button>
+          }
+
+          <button mat-stroked-button type="button" (click)="addMapObject()">Add map object</button>
+        </mat-card-content>
+      </mat-card>
+
+      @if (selectedMapObjectGroup(); as mapObjectGroup) {
+        <form class="document-form" [formGroup]="mapObjectGroup">
+          <mat-card>
+            <mat-card-content class="card-grid">
+              <mat-form-field>
+                <mat-label>ID</mat-label>
+                <input matInput formControlName="id" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput formControlName="name" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Type</mat-label>
+                <input matInput formControlName="type" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Period</mat-label>
+                <input matInput formControlName="period" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Coordinates</mat-label>
+                <input matInput formControlName="coordinates" />
+              </mat-form-field>
+
+              <mat-form-field>
+                <mat-label>Scene IDs</mat-label>
+                <input matInput formControlName="sceneIds" />
+              </mat-form-field>
+
+              <mat-form-field class="full-width">
+                <mat-label>Detail</mat-label>
+                <textarea matInput rows="4" formControlName="detail"></textarea>
+              </mat-form-field>
+            </mat-card-content>
+          </mat-card>
+
+          <div class="footer-actions">
+            <button
+              mat-button
+              type="button"
+              color="warn"
+              (click)="removeMapObject(selectedMapObjectIndex())"
+            >
+              Delete map object
+            </button>
+          </div>
+        </form>
+      }
+    </section>
+  </mat-tab>
+</mat-tab-group>

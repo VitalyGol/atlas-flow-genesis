@@ -1,0 +1,101 @@
+:host {
+  display: block;
+}
+
+.editor-toolbar,
+.toolbar-actions,
+.editor-grid,
+.card-grid,
+.nested-grid,
+.point-row,
+.inline-actions,
+.footer-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+.editor-toolbar,
+.point-row,
+.inline-actions,
+.footer-actions {
+  align-items: center;
+}
+
+.editor-toolbar,
+.editor-grid {
+  justify-content: space-between;
+}
+
+.editor-grid {
+  align-items: start;
+}
+
+.list-card {
+  width: 18rem;
+  flex: 0 0 18rem;
+}
+
+.list-card mat-card-content,
+.topic-form {
+  display: grid;
+  gap: 1rem;
+}
+
+.topic-form {
+  flex: 1;
+}
+
+.list-item {
+  display: grid;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(8, 32, 50, 0.12);
+  border-radius: 0.9rem;
+  text-align: left;
+  background: #fff;
+}
+
+.list-item.active {
+  border-color: #124e78;
+  background: rgba(18, 78, 120, 0.08);
+}
+
+.card-grid,
+.nested-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.nested-card {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border: 1px solid rgba(8, 32, 50, 0.08);
+  border-radius: 1rem;
+}
+
+.points-list {
+  display: grid;
+  gap: 0.5rem;
+}
+
+@media (max-width: 960px) {
+  .editor-grid {
+    flex-direction: column;
+  }
+
+  .list-card {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .card-grid,
+  .nested-grid,
+  .point-row {
+    grid-template-columns: 1fr;
+  }
+}

@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 
 import { adminGuard } from './core/guards/admin.guard';
+import { devEditorRoutes } from './app.dev-editor.routes';
 import { ShellComponent } from './layout/shell/shell.component';
 import { AccessDeniedComponent } from './pages/access-denied/access-denied.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
@@ -12,7 +13,7 @@ export const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    component: HomeComponent
+    component: HomeComponent,
   },
   {
     path: '',
@@ -20,25 +21,26 @@ export const routes: Routes = [
     children: [
       {
         path: 'scenes/:sceneId',
-        component: SceneReaderComponent
+        component: SceneReaderComponent,
       },
       {
         path: 'admin/login',
-        component: AdminLoginComponent
+        component: AdminLoginComponent,
       },
       {
         path: 'access-denied',
-        component: AccessDeniedComponent
+        component: AccessDeniedComponent,
       },
       {
         path: 'admin',
         canActivate: [adminGuard],
-        component: AdminDashboardComponent
-      }
-    ]
+        component: AdminDashboardComponent,
+      },
+      ...devEditorRoutes,
+    ],
   },
   {
     path: '**',
-    redirectTo: ''
-  }
+    redirectTo: '',
+  },
 ];

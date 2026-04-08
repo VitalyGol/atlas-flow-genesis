@@ -27,7 +27,7 @@
     </div>
 
     <mat-nav-list>
-      @for (topic of topics; track topic.id) {
+      @for (topic of topics(); track topic.id) {
         <div
           class="topic-item"
           [class.active]="selectedTopicId() === topic.id"
@@ -57,6 +57,10 @@
       </div>
 
       <div #mapHost class="map-host" aria-label="Interactive polygon map"></div>
+
+      @if (!topics().length) {
+        <div class="map-loading">Loading map data...</div>
+      }
 
       <button
         mat-fab

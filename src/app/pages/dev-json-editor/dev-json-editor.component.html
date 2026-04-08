@@ -1,0 +1,42 @@
+<section class="page-header">
+  <div>
+    <p class="eyebrow">Development Only</p>
+    <h1>JSON Editor</h1>
+    <p>
+      Edit static content documents while keeping production on direct JSON reads from
+      <code>public/data</code>.
+    </p>
+  </div>
+
+  <button mat-stroked-button type="button" (click)="reload()" [disabled]="loading() || saving()">
+    Reload from disk
+  </button>
+</section>
+
+@if (errorMessage()) {
+  <mat-card class="status-card error">
+    <mat-card-content>{{ errorMessage() }}</mat-card-content>
+  </mat-card>
+}
+
+@if (saveMessage()) {
+  <mat-card class="status-card success">
+    <mat-card-content>{{ saveMessage() }}</mat-card-content>
+  </mat-card>
+}
+
+@if (loading()) {
+  <mat-card class="status-card">
+    <mat-card-content>Loading editable JSON documents...</mat-card-content>
+  </mat-card>
+} @else {
+  <mat-tab-group>
+    <mat-tab label="Home Topics">
+      <app-home-topics-editor [topics]="homeTopics()" (saved)="saveHomeTopics($event)" />
+    </mat-tab>
+
+    <mat-tab label="Story Data">
+      <app-story-data-editor [document]="storyDocument()" (saved)="saveStoryDocument($event)" />
+    </mat-tab>
+  </mat-tab-group>
+}

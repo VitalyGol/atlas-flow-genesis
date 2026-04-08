@@ -4,15 +4,17 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { MockAuthService } from '../../core/services/mock-auth.service';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-shell',
   imports: [MatButtonModule, MatToolbarModule, RouterLink, RouterLinkActive, RouterOutlet],
   templateUrl: './shell.component.html',
-  styleUrl: './shell.component.scss'
+  styleUrl: './shell.component.scss',
 })
 export class ShellComponent {
   protected readonly auth = inject(MockAuthService);
+  protected readonly environment = environment;
 
   protected toggleAdminSession(): void {
     if (this.auth.isAdmin()) {

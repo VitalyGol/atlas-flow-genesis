@@ -1,0 +1,90 @@
+:host {
+  display: block;
+}
+
+.editor-toolbar,
+.toolbar-actions,
+.editor-grid,
+.card-grid,
+.footer-actions,
+.section-header {
+  display: flex;
+  gap: 1rem;
+}
+
+.editor-toolbar,
+.editor-grid,
+.section-header {
+  justify-content: space-between;
+}
+
+.editor-grid {
+  align-items: start;
+  margin-top: 1rem;
+}
+
+.list-card {
+  width: 18rem;
+  flex: 0 0 18rem;
+}
+
+.list-card mat-card-content,
+.document-form,
+.subsection {
+  display: grid;
+  gap: 1rem;
+}
+
+.document-form {
+  flex: 1;
+}
+
+.list-item {
+  display: grid;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(8, 32, 50, 0.12);
+  border-radius: 0.9rem;
+  text-align: left;
+  background: #fff;
+}
+
+.list-item.active {
+  border-color: #124e78;
+  background: rgba(18, 78, 120, 0.08);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.full-width {
+  grid-column: 1 / -1;
+}
+
+.nested-card {
+  padding: 1rem;
+  border: 1px solid rgba(8, 32, 50, 0.08);
+  border-radius: 1rem;
+}
+
+.asset-card {
+  background: rgba(18, 78, 120, 0.03);
+}
+
+@media (max-width: 960px) {
+  .editor-grid {
+    flex-direction: column;
+  }
+
+  .list-card {
+    width: 100%;
+    flex-basis: auto;
+  }
+
+  .card-grid {
+    grid-template-columns: 1fr;
+  }
+}

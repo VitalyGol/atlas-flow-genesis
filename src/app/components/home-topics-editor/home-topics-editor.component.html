@@ -1,0 +1,242 @@
+<section class="editor-toolbar">
+  <div>
+    <h2>Home Topics</h2>
+    <p>Edit topics, labels, routes, and polygon coordinates for the homepage map.</p>
+  </div>
+
+  <div class="toolbar-actions">
+    <button mat-stroked-button type="button" (click)="addTopic()">Add Topic</button>
+    <button mat-flat-button type="button" (click)="submit()">Save Home Topics</button>
+  </div>
+</section>
+
+<section class="editor-grid">
+  <mat-card class="list-card">
+    <mat-card-content>
+      @for (topic of topicControls(); track $index) {
+        <button
+          class="list-item"
+          type="button"
+          [class.active]="selectedTopicIndex() === $index"
+          (click)="selectTopic($index)"
+        >
+          <span>{{ topic.get('name')?.value || 'Untitled topic' }}</span>
+          <span>{{ topic.get('id')?.value || 'new-topic' }}</span>
+        </button>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  @if (selectedTopicGroup(); as topicGroup) {
+    <form class="topic-form" [formGroup]="topicGroup">
+      <mat-card>
+        <mat-card-content class="card-grid">
+          <mat-form-field>
+            <mat-label>Topic ID</mat-label>
+            <input matInput formControlName="id" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Scene ID</mat-label>
+            <input matInput formControlName="sceneId" />
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Name</mat-label>
+            <input matInput formControlName="name" />
+          </mat-form-field>
+
+          <mat-form-field class="full-width">
+            <mat-label>Description</mat-label>
+            <textarea matInput rows="3" formControlName="description"></textarea>
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Center latitude</mat-label>
+            <input matInput type="number" formControlName="centerLat" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Center longitude</mat-label>
+            <input matInput type="number" formControlName="centerLng" />
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Zoom</mat-label>
+            <input matInput type="number" formControlName="zoom" />
+          </mat-form-field>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Labels</mat-card-title>
+        </mat-card-header>
+        <mat-card-content formArrayName="labels">
+          @for (label of labelsArray(topicGroup).controls; track $index) {
+            <div class="nested-card" [formGroupName]="$index">
+              <div class="nested-grid">
+                <mat-form-field>
+                  <mat-label>ID</mat-label>
+                  <input matInput formControlName="id" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Latitude</mat-label>
+                  <input matInput type="number" formControlName="lat" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Longitude</mat-label>
+                  <input matInput type="number" formControlName="lng" />
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput rows="2" formControlName="description"></textarea>
+                </mat-form-field>
+              </div>
+
+              <button mat-button type="button" (click)="removeLabel(topicGroup, $index)">
+                Remove label
+              </button>
+            </div>
+          }
+
+          <button mat-stroked-button type="button" (click)="addLabel(topicGroup)">Add label</button>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Polylines</mat-card-title>
+        </mat-card-header>
+        <mat-card-content formArrayName="polyline">
+          @for (line of polylineArray(topicGroup).controls; track $index) {
+            <div class="nested-card" [formGroupName]="$index">
+              <div class="nested-grid">
+                <mat-form-field>
+                  <mat-label>ID</mat-label>
+                  <input matInput formControlName="id" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput rows="2" formControlName="description"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="points-list" formArrayName="points">
+                @for (point of pointsArray(line).controls; track $index) {
+                  <div class="point-row" [formGroupName]="$index">
+                    <mat-form-field>
+                      <mat-label>Lat</mat-label>
+                      <input matInput type="number" formControlName="lat" />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Lng</mat-label>
+                      <input matInput type="number" formControlName="lng" />
+                    </mat-form-field>
+
+                    <button mat-button type="button" (click)="removePoint(line, $index)">
+                      Remove point
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <div class="inline-actions">
+                <button mat-stroked-button type="button" (click)="addPoint(line)">Add point</button>
+                <button mat-button type="button" (click)="removePolyline(topicGroup, $index)">
+                  Remove polyline
+                </button>
+              </div>
+            </div>
+          }
+
+          <button mat-stroked-button type="button" (click)="addPolyline(topicGroup)">
+            Add polyline
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>Polygons</mat-card-title>
+        </mat-card-header>
+        <mat-card-content formArrayName="polygons">
+          @for (polygon of polygonsArray(topicGroup).controls; track $index) {
+            <div class="nested-card" [formGroupName]="$index">
+              <div class="nested-grid">
+                <mat-form-field>
+                  <mat-label>ID</mat-label>
+                  <input matInput formControlName="id" />
+                </mat-form-field>
+
+                <mat-form-field>
+                  <mat-label>Name</mat-label>
+                  <input matInput formControlName="name" />
+                </mat-form-field>
+
+                <mat-form-field class="full-width">
+                  <mat-label>Description</mat-label>
+                  <textarea matInput rows="2" formControlName="description"></textarea>
+                </mat-form-field>
+              </div>
+
+              <div class="points-list" formArrayName="points">
+                @for (point of pointsArray(polygon).controls; track $index) {
+                  <div class="point-row" [formGroupName]="$index">
+                    <mat-form-field>
+                      <mat-label>Lat</mat-label>
+                      <input matInput type="number" formControlName="lat" />
+                    </mat-form-field>
+
+                    <mat-form-field>
+                      <mat-label>Lng</mat-label>
+                      <input matInput type="number" formControlName="lng" />
+                    </mat-form-field>
+
+                    <button mat-button type="button" (click)="removePoint(polygon, $index)">
+                      Remove point
+                    </button>
+                  </div>
+                }
+              </div>
+
+              <div class="inline-actions">
+                <button mat-stroked-button type="button" (click)="addPoint(polygon)">
+                  Add point
+                </button>
+                <button mat-button type="button" (click)="removePolygon(topicGroup, $index)">
+                  Remove polygon
+                </button>
+              </div>
+            </div>
+          }
+
+          <button mat-stroked-button type="button" (click)="addPolygon(topicGroup)">
+            Add polygon
+          </button>
+        </mat-card-content>
+      </mat-card>
+
+      <div class="footer-actions">
+        <button mat-button type="button" color="warn" (click)="removeTopic(selectedTopicIndex())">
+          Delete topic
+        </button>
+      </div>
+    </form>
+  }
+</section>

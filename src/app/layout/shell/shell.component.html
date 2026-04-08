@@ -6,18 +6,23 @@
       mat-button
       routerLink="/"
       [routerLinkActiveOptions]="{ exact: true }"
-      routerLinkActive="active-link">
+      routerLinkActive="active-link"
+    >
       Home
     </a>
     <a
       mat-button
       routerLink="/scenes/river-at-dawn"
       [routerLinkActiveOptions]="{ exact: false }"
-      routerLinkActive="active-link">
+      routerLinkActive="active-link"
+    >
       Read Story
     </a>
     <a mat-button routerLink="/admin" routerLinkActive="active-link">Admin Dashboard</a>
     <a mat-button routerLink="/admin/login" routerLinkActive="active-link">Admin Login</a>
+    @if (environment.editorEnabled) {
+      <a mat-button routerLink="/dev/editor" routerLinkActive="active-link">Dev Editor</a>
+    }
   </nav>
 
   <button mat-button class="session-button" (click)="toggleAdminSession()">

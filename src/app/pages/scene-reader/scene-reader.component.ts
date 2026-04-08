@@ -19,8 +19,9 @@ import * as L from 'leaflet';
 import 'leaflet-providers';
 import { map } from 'rxjs';
 
+import { MapTopic } from '../../core/models/home.models';
 import { MapObject, Scene, SceneAsset, SceneParagraph } from '../../core/models/story.models';
-import { HomeDataService, MapTopic } from '../../core/services/home-data.service';
+import { HomeDataService } from '../../core/services/home-data.service';
 import { StoryDataService } from '../../core/services/story-data.service';
 
 @Component({
@@ -49,7 +50,7 @@ export class SceneReaderComponent {
   protected readonly currentScene = computed(() => this.storyData.getScene(this.sceneId()));
   protected readonly paragraphs = computed(() => this.currentScene()?.paragraphs ?? []);
   protected readonly sceneMapTopic = computed(
-    () => this.homeData.topics.find((topic) => topic.sceneId === this.sceneId()) ?? null,
+    () => this.homeData.topics().find((topic) => topic.sceneId === this.sceneId()) ?? null,
   );
   protected readonly relatedMapObjects = computed(() =>
     this.storyData.getRelatedMapObjects(this.sceneId()),
@@ -338,7 +339,7 @@ export class SceneReaderComponent {
     }
 
     if (asset.mapTopicId) {
-      return this.homeData.topics.find((topic) => topic.id === asset.mapTopicId) ?? null;
+      return this.homeData.topics().find((topic) => topic.id === asset.mapTopicId) ?? null;
     }
 
     return this.sceneMapTopic();

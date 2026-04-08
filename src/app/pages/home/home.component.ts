@@ -4,6 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   ViewChild,
+  effect,
   inject,
   signal,
 } from '@angular/core';
@@ -13,7 +14,8 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenav, MatSidenavModule } from '@angular/material/sidenav';
 import * as L from 'leaflet';
 import 'leaflet-providers';
-import { HomeDataService, MapTopic } from '../../core/services/home-data.service';
+import { MapTopic } from '../../core/models/home.models';
+import { HomeDataService } from '../../core/services/home-data.service';
 
 interface TopicLayers {
   polyline: L.Polyline[];
@@ -34,13 +36,27 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
   private readonly homeDataService = inject(HomeDataService);
 
   protected readonly selectedTopicId = signal('part-one');
-  protected readonly topics: MapTopic[] = this.homeDataService.topics;
+  protected readonly topics = this.homeDataService.topics;
 
   private map?: L.Map;
   private readonly topicLayers = new Map<string, TopicLayers>();
 
+  constructor() {
+    effect(() => {
+      const topics = this.topics();
+
+      if (!topics.length || this.map) {
+        return;
+      }
+
+      window.setTimeout(() => this.initializeMap(), 0);
+    });
+  }
+
   ngAfterViewInit(): void {
-    this.initializeMap();
+    if (this.topics().length) {
+      this.initializeMap();
+    }
   }
 
   ngOnDestroy(): void {
@@ -86,8 +102,9 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
 
   private initializeMap(): void {
     const host = this.mapHost?.nativeElement;
+    const topics = this.topics();
 
-    if (!host) {
+    if (!host || !topics.length || this.map) {
       return;
     }
 
@@ -95,7 +112,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       zoomControl: false,
       attributionControl: true,
       maxZoom: 17,
-    }).setView(this.topics[0].center, this.topics[0].zoom);
+    }).setView(topics[0].center, topics[0].zoom);
 
     L.control.zoom({ position: 'bottomleft' }).addTo(this.map);
 
@@ -106,7 +123,7 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
       })
       .addTo(this.map);
 
-    for (const topic of this.topics) {
+    for (const topic of topics) {
       const polygons = topic.polygons.map((polygonData) => {
         const polygon = L.polygon(polygonData.points, {
           color: '#124e78',
@@ -152,11 +169,11 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
     }
 
     this.syncTopicStyles();
-    this.focusTopic(this.topics[0]);
+    this.focusTopic(topics[0]);
   }
 
   private syncTopicStyles(): void {
-    for (const topic of this.topics) {
+    for (const topic of this.topics()) {
       const layers = this.topicLayers.get(topic.id);
 
       if (!layers) {
@@ -189,7 +206,6 @@ export class HomeComponent implements AfterViewInit, OnDestroy {
           polygon.bringToFront();
         }
       }
-
 
       for (const polygon of layers.polygons) {
         polygon.setStyle({

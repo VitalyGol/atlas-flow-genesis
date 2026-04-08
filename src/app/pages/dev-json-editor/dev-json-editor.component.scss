@@ -1,0 +1,42 @@
+:host {
+  display: block;
+}
+
+.page-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: start;
+  margin-bottom: 1rem;
+}
+
+.eyebrow {
+  margin: 0 0 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #2c6e91;
+}
+
+h1 {
+  margin: 0;
+}
+
+.status-card {
+  margin-bottom: 1rem;
+}
+
+.status-card.error {
+  border-left: 4px solid #a12929;
+}
+
+.status-card.success {
+  border-left: 4px solid #1a7f4b;
+}
+
+@media (max-width: 720px) {
+  .page-header {
+    flex-direction: column;
+  }
+}
