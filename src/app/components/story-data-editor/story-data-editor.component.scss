@@ -37,7 +37,11 @@
 
 .document-form {
   flex: 1;
+  max-height: calc(100vh - 30rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
 }
+
 
 .list-item {
   display: grid;
@@ -62,6 +66,37 @@
 
 .full-width {
   grid-column: 1 / -1;
+}
+
+.editor-field {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.editor-field-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: rgba(16, 32, 49, 0.78);
+}
+
+.html-editor {
+  display: block;
+}
+
+.html-editor ::ng-deep .ql-toolbar.ql-snow,
+.html-editor ::ng-deep .ql-container.ql-snow {
+  border-color: rgba(8, 32, 50, 0.12);
+}
+
+.html-editor ::ng-deep .ql-toolbar.ql-snow {
+  border-radius: 0.75rem 0.75rem 0 0;
+  background: #fff;
+}
+
+.html-editor ::ng-deep .ql-container.ql-snow {
+  min-height: 11rem;
+  border-radius: 0 0 0.75rem 0.75rem;
+  background: #fff;
 }
 
 .nested-card {

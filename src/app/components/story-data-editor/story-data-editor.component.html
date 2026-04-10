@@ -80,14 +80,19 @@
                     </mat-form-field>
 
                     <mat-form-field class="full-width">
-                      <mat-label>Title</mat-label>
+                      <mat-label>editing</mat-label>
                       <input matInput formControlName="title" />
                     </mat-form-field>
 
-                    <mat-form-field class="full-width">
-                      <mat-label>Text</mat-label>
-                      <textarea matInput rows="5" formControlName="text"></textarea>
-                    </mat-form-field>
+                    <div class="full-width editor-field">
+                      <label class="editor-field-label">Text</label>
+                      <quill-editor
+                        class="html-editor"
+                        formControlName="text"
+                        format="html"
+                        [modules]="paragraphEditorModules"
+                      />
+                    </div>
                   </div>
 
                   <div class="subsection" formArrayName="assets">

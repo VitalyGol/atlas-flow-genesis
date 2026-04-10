@@ -1,4 +1,4 @@
-import { Component, effect, inject, input, output, signal } from '@angular/core';
+import { Component, effect, inject, input, output, signal, untracked } from '@angular/core';
 import {
   AbstractControl,
   FormArray,
@@ -13,6 +13,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
+import { QuillEditorComponent } from 'ngx-quill';
+import type { QuillModules } from 'ngx-quill/config';
 
 import { StoryDataDocument } from '../../core/models/editor.models';
 import { coordinateStringValidator } from '../../core/validators/editor.validators';
@@ -27,6 +29,7 @@ import { coordinateStringValidator } from '../../core/validators/editor.validato
     MatInputModule,
     MatSelectModule,
     MatTabsModule,
+    QuillEditorComponent,
   ],
   templateUrl: './story-data-editor.component.html',
   styleUrl: './story-data-editor.component.scss',
@@ -39,6 +42,14 @@ export class StoryDataEditorComponent {
 
   protected readonly selectedSceneIndex = signal(0);
   protected readonly selectedMapObjectIndex = signal(0);
+  protected readonly paragraphEditorModules: QuillModules = {
+    toolbar: [
+      ['bold', 'italic', 'underline'],
+      [{ list: 'ordered' }, { list: 'bullet' }],
+      ['link'],
+      ['clean'],
+    ],
+  };
   protected readonly form = this.formBuilder.group({
     scenes: this.formBuilder.array([]),
     mapObjects: this.formBuilder.array([]),
@@ -46,7 +57,8 @@ export class StoryDataEditorComponent {
 
   constructor() {
     effect(() => {
-      this.replaceDocument(this.document());
+      const document = this.document();
+      untracked(() => this.replaceDocument(document));
     });
   }
 
@@ -192,7 +204,7 @@ export class StoryDataEditorComponent {
       id: [paragraph?.id ?? '', Validators.required],
       path: [paragraph?.path ?? '', Validators.required],
       title: [paragraph?.title ?? '', Validators.required],
-      text: [paragraph?.text ?? '', Validators.required],
+      text: [paragraph?.text ?? ''],
       assets: this.formBuilder.array(
         (paragraph?.assets ?? []).map((asset) => this.createAssetGroup(asset)),
       ),
@@ -242,7 +254,7 @@ export class StoryDataEditorComponent {
         id: String(paragraphGroup.get('id')?.value ?? '').trim(),
         path: String(paragraphGroup.get('path')?.value ?? '').trim(),
         title: String(paragraphGroup.get('title')?.value ?? '').trim(),
-        text: String(paragraphGroup.get('text')?.value ?? '').trim(),
+        text: this.normalizeParagraphText(paragraphGroup.get('text')?.value),
         assets: this.assetsArray(paragraphGroup).controls.map((assetGroup) => ({
           id: String(assetGroup.get('id')?.value ?? '').trim(),
           type: assetGroup.get('type')?.value,
@@ -274,6 +286,15 @@ export class StoryDataEditorComponent {
       .split(',')
       .map((entry) => entry.trim())
       .filter(Boolean);
+  }
+
+  private normalizeParagraphText(value: unknown): string {
+    const trimmed = String(value ?? '')
+      .replace(/\u00a0/g, ' ')
+      .replace(/&nbsp;/g, ' ')
+      .trim();
+
+    return trimmed === '<p><br></p>' ? '' : trimmed;
   }
 
   private optionalTrim(value: unknown): string | undefined {

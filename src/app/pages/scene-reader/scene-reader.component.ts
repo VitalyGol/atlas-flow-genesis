@@ -144,7 +144,12 @@ export class SceneReaderComponent {
   }
 
   protected sanitizedParagraphText(paragraph: SceneParagraph): string {
-    return this.sanitizer.sanitize(SecurityContext.HTML, paragraph.text) ?? '';
+    const text = paragraph.text ?? '';
+    const normalized = this.looksLikeHtml(text)
+      ? text
+      : this.escapeHtml(text).replace(/\n/g, '<br>');
+
+    return this.sanitizer.sanitize(SecurityContext.HTML, normalized) ?? '';
   }
 
   protected openImagePreview(): void {
@@ -175,6 +180,19 @@ export class SceneReaderComponent {
   protected mapHasObjects(): boolean {
     const asset = this.activeAsset();
     return this.getAssetMapObjects(asset).length > 0 || this.getAssetMapTopic(asset) !== null;
+  }
+
+  private looksLikeHtml(value: string): boolean {
+    return /<\/?[a-z][\s\S]*>/i.test(value);
+  }
+
+  private escapeHtml(value: string): string {
+    return value
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#39;');
   }
 
   private syncActiveAssetMap(): void {

@@ -43,6 +43,9 @@
 
 .topic-form {
   flex: 1;
+  max-height: calc(100vh - 26rem);
+  overflow-y: auto;
+  padding-right: 0.25rem;
 }
 
 .list-item {
@@ -97,5 +100,11 @@
   .nested-grid,
   .point-row {
     grid-template-columns: 1fr;
+  }
+
+  .topic-form {
+    max-height: none;
+    overflow: visible;
+    padding-right: 0;
   }
 }
